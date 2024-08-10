@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="ALU_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="ALU_tb" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="40000001fs"></ZoomEndTime>
+      <Cursor1Time time="40000000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="129"></NameColumnWidth>
+      <ValueColumnWidth column_width="91"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="5" />
+   <wvobject type="array" fp_name="/ALU_tb/A">
+      <obj_property name="ElementShortName">A[3:0]</obj_property>
+      <obj_property name="ObjectShortName">A[3:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/ALU_tb/B">
+      <obj_property name="ElementShortName">B[3:0]</obj_property>
+      <obj_property name="ObjectShortName">B[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/ALU_tb/ALU_Sel">
+      <obj_property name="ElementShortName">ALU_Sel[1:0]</obj_property>
+      <obj_property name="ObjectShortName">ALU_Sel[1:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/ALU_tb/Result">
+      <obj_property name="ElementShortName">Result[3:0]</obj_property>
+      <obj_property name="ObjectShortName">Result[3:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/ALU_tb/CarryOut">
+      <obj_property name="ElementShortName">CarryOut</obj_property>
+      <obj_property name="ObjectShortName">CarryOut</obj_property>
+   </wvobject>
+</wave_config>
