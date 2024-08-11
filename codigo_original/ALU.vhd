@@ -1,6 +1,5 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
-use IEEE.numeric_std.all;  -- Para tipos unsigned
 
 entity ALU is
     port(
@@ -9,7 +8,7 @@ entity ALU is
         B : in std_logic_vector(3 downto 0);  -- Entrada B de 4 bits
         ALU_Sel : in std_logic_vector(1 downto 0);  -- Selector de operación
         Result : out std_logic_vector(3 downto 0);  -- Resultado de la operación
-        CarryOut : out std_logic   -- Salida de acarreo (solo para suma/resta)
+        CarryOut : out std_logic   -- Salida de acarreo (o préstamo)
     );
 end entity ALU;
 
@@ -32,6 +31,16 @@ architecture Behavioral of ALU is
         );
     END COMPONENT;
 
+    -- Declaración del componente Subtractor4b
+    COMPONENT subtractor4b
+        port(
+            a : in std_logic_vector(3 downto 0);  -- Minuendo de 4 bits
+            b : in std_logic_vector(3 downto 0);  -- Sustraendo de 4 bits
+            diff : out std_logic_vector(3 downto 0);  -- Resultado de la resta
+            borrow : out std_logic  -- Préstamo de la resta
+        );
+    end COMPONENT;
+
     -- Señales para conectar el VIO con la ALU
     signal vio_A: std_logic_vector(3 downto 0);
     signal vio_B: std_logic_vector(3 downto 0);
@@ -52,8 +61,9 @@ begin
             s_o => Sum,
             co_o => Carry
         );
+
     -- Instancia del subtractor de 4 bits
-    subtractor_inst: entity work.subtractor4b
+    subtractor_inst: subtractor4b
         port map(
             a => vio_A,
             b => vio_B,
@@ -93,6 +103,3 @@ begin
         );
 
 end architecture Behavioral;
-
-
-

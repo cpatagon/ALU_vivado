@@ -1,6 +1,5 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
-use IEEE.numeric_std.all;  -- Para tipos unsigned
 
 entity ALU is
     port(
@@ -9,7 +8,7 @@ entity ALU is
         B : in std_logic_vector(3 downto 0);  -- Entrada B de 4 bits
         ALU_Sel : in std_logic_vector(1 downto 0);  -- Selector de operación
         Result : out std_logic_vector(3 downto 0);  -- Resultado de la operación
-        CarryOut : out std_logic   -- Salida de acarreo (solo para suma/resta)
+        CarryOut : out std_logic   -- Salida de acarreo (solo para suma)
     );
 end entity ALU;
 
@@ -52,25 +51,14 @@ begin
             s_o => Sum,
             co_o => Carry
         );
-    -- Instancia del subtractor de 4 bits
-    subtractor_inst: entity work.subtractor4b
-        port map(
-            a => vio_A,
-            b => vio_B,
-            diff => Difference,
-            borrow => Borrow
-        );
 
     -- Proceso para seleccionar la operación de la ALU
-    process(vio_A, vio_B, vio_ALU_Sel, Sum, Difference, Carry, Borrow)
+    process(vio_A, vio_B, vio_ALU_Sel, Sum, Carry)
     begin
         case vio_ALU_Sel is
             when "00" =>  -- Operación de suma
                 internal_result <= Sum;
                 internal_carryout <= Carry;
-            when "01" =>  -- Operación de resta
-                internal_result <= Difference;
-                internal_carryout <= Borrow;  -- Usar Borrow para indicar el préstamo
             when others =>
                 internal_result <= (others => '0');  -- Estado por defecto (sin operación)
                 internal_carryout <= '0';
@@ -93,6 +81,3 @@ begin
         );
 
 end architecture Behavioral;
-
-
-
