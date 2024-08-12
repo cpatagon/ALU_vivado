@@ -5,8 +5,11 @@
 Este proyecto implementa una Unidad Aritmético-Lógica (ALU) en VHDL. Una ALU es un componente esencial en los procesadores modernos, responsable de realizar operaciones aritméticas y lógicas sobre los datos. Este diseño modular permite la simulación y prueba de diferentes operaciones mediante bancos de pruebas detallados.
 
 
+<video width="640" height="480" controls>
+  <source src=".doc/video/alu_video.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
 
-![video funcionamiento](./doc/video/alu_video.mp4)
 *Fig 0: funcionamiento ejecución del proyecto ALU en Vivado sobre una placa ARTY Z7*  
 
 
