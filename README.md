@@ -23,6 +23,129 @@ El proyecto está organizado en varias carpetas para facilitar la gestión de co
 - **sim/**: Archivos de simulación y scripts para ModelSim y GHDL.
 - **doc/**: Documentación del proyecto, incluyendo especificaciones de diseño e informes de prueba.
 
+
+## Módulo de Resta de 4 Bits en VHDL
+
+El módulo de resta de 4 bits está diseñado para realizar la operación de resta entre dos números binarios de 4 bits y gestionar el préstamo en caso de que el sustraendo sea mayor que el minuendo. Utiliza la lógica de complemento a dos para llevar a cabo la resta.
+
+### Descripción del Código
+
+#### Librerías
+
+- `IEEE.std_logic_1164`: Proporciona tipos y funciones para manejar señales de lógica digital.
+- `IEEE.numeric_std`: Permite manejar vectores de bits como números enteros sin signo (`unsigned`).
+
+#### Entidad `subtractor4b`
+
+- **Entradas**:
+  - `a`: Minuendo de 4 bits, representado como un vector de lógica digital (`std_logic_vector`).
+  - `b`: Sustraendo de 4 bits, también representado como un vector de lógica digital.
+
+- **Salidas**:
+  - `diff`: Resultado de la resta, un vector de 4 bits.
+  - `borrow`: Señal de 1 bit que indica si se produjo un préstamo durante la operación de resta.
+
+#### Arquitectura `Behavioral`
+
+La arquitectura define el comportamiento del módulo de resta.
+
+##### Señales Internas
+
+- `a_unsigned`: Conversión del minuendo `a` a un número sin signo para realizar operaciones aritméticas.
+- `b_unsigned`: Conversión del sustraendo `b` a un número sin signo.
+- `temp_result`: Variable interna que almacena el resultado intermedio de la resta, incluyendo el bit de préstamo.
+
+##### Proceso de Resta
+
+1. **Conversión a `unsigned`**:
+   - `a` y `b` se convierten a tipo `unsigned` para permitir la suma y resta de manera aritmética.
+
+2. **Cálculo del Complemento a Dos**:
+   - La resta se lleva a cabo sumando el complemento a dos del sustraendo `b_unsigned` al minuendo `a_unsigned`.
+   - Ambos números se extienden a 5 bits para incluir el bit de préstamo en el cálculo.
+
+3. **Asignación de Resultados**:
+   - El resultado de la resta (`diff`) se extrae de los 4 bits menos significativos de `temp_result`.
+   - El bit de préstamo se obtiene del bit más significativo de `temp_result`. Si este bit es 1, `borrow` será 0, indicando que se requirió un préstamo.
+
+### Ejemplo de Uso
+
+Para `a = "0010"` (2 en decimal) y `b = "0011"` (3 en decimal):
+
+- El resultado (`diff`) será `"1111"`, que es -1 en complemento a dos para un vector de 4 bits.
+- La señal `borrow` será `'1'`, indicando que se produjo un préstamo durante la resta.
+
+Este módulo es fundamental para realizar operaciones de resta en diseños digitales donde se necesitan manejar números negativos o detectar préstamos.
+
+
+
+## Módulo de Multiplicación de 4 Bits en VHDL
+
+Este módulo implementa un multiplicador de 4 bits utilizando el lenguaje VHDL. La multiplicación se realiza sin recurrir a bibliotecas aritméticas avanzadas, utilizando un enfoque basado en la suma de desplazamientos.
+
+### Descripción de la Entidad
+
+La entidad `multiplier4b` define los puertos del módulo:
+
+- **Entradas:**
+  - `a`: Multiplicando de 4 bits (tipo `std_logic_vector(3 downto 0)`).
+  - `b`: Multiplicador de 4 bits (tipo `std_logic_vector(3 downto 0)`).
+
+- **Salida:**
+  - `product`: Producto de 8 bits (tipo `std_logic_vector(7 downto 0)`), que es el resultado de la multiplicación de `a` y `b`.
+
+### Arquitectura
+
+La arquitectura `Behavioral` del módulo utiliza un proceso para realizar la multiplicación mediante suma de desplazamientos. Aquí está la explicación paso a paso de cómo funciona el código:
+
+1. **Extensión del Multiplicando:**
+   - El multiplicando `a` se extiende a 8 bits para manejar la multiplicación, agregando ceros en los bits más significativos. Esto se realiza con la concatenación `"0000" & a`.
+
+2. **Bucle de Multiplicación:**
+   - Se utiliza un bucle `for` que itera sobre cada bit del multiplicador `b`.
+   - Si el bit actual del multiplicador es '1', se realiza una suma desplazada. Esto implica desplazar el multiplicando a la izquierda tantas posiciones como indique el índice del bit actual y sumar este valor al producto temporal.
+   
+3. **Asignación del Producto:**
+   - Una vez completado el bucle, el producto calculado se asigna a la salida `product`.
+
+#### Código VHDL
+
+```vhdl
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.numeric_std.all;  -- Necesario para usar el tipo unsigned
+
+entity multiplier4b is
+    port(
+        a : in std_logic_vector(3 downto 0);  -- Entrada: Multiplicando de 4 bits.
+        b : in std_logic_vector(3 downto 0);  -- Entrada: Multiplicador de 4 bits.
+        product : out std_logic_vector(7 downto 0)  -- Salida: Producto de 8 bits.
+    );
+end entity multiplier4b;
+
+architecture Behavioral of multiplier4b is
+begin
+    process(a, b)
+        variable temp_product: unsigned(7 downto 0) := (others => '0'); -- Almacena el producto temporalmente.
+        variable multiplicand: unsigned(7 downto 0) := (others => '0'); -- Almacena el multiplicando extendido a 8 bits.
+        variable multiplier: std_logic_vector(3 downto 0); -- Almacena el multiplicador.
+    begin
+        multiplicand := unsigned("0000" & a); -- Extiende 'a' a 8 bits.
+        multiplier := b;
+
+        for i in 0 to 3 loop
+            if multiplier(i) = '1' then
+                -- Desplaza el multiplicando y suma al producto temporal.
+                temp_product := temp_product + shift_left(multiplicand, i);
+            end if;
+        end loop;
+
+        product <= std_logic_vector(temp_product); -- Asigna el producto a la salida.
+    end process;
+end architecture Behavioral;
+```
+
+
 ## Requisitos
 
 Para compilar y simular este proyecto, se necesita:

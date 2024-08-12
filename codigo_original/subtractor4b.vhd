@@ -1,5 +1,6 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
+use IEEE.numeric_std.all;  -- Necesario para usar el tipo unsigned
 
 entity subtractor4b is
     port(
@@ -11,22 +12,24 @@ entity subtractor4b is
 end entity subtractor4b;
 
 architecture Behavioral of subtractor4b is
-    signal b_complement: std_logic_vector(3 downto 0);
-    signal temp_sum: std_logic_vector(4 downto 0); -- Incluye bit de acarreo/borrow
+    signal a_unsigned, b_unsigned: unsigned(3 downto 0);
+    signal temp_result: unsigned(4 downto 0); -- Incluye bit de acarreo/borrow
 begin
-    -- Complemento a 2 de B para realizar la resta como suma
-    b_complement <= not b + "0001";
+    -- Convertir a y b a tipo unsigned
+    a_unsigned <= unsigned(a);
+    b_unsigned <= unsigned(b);
 
-    -- Suma A y el complemento a 2 de B
-    temp_sum <= ('0' & a) + ('0' & b_complement); 
+    -- Sumar el complemento a 2 de B
+    temp_result <= ("0" & a_unsigned) - ("0" & b_unsigned);
 
     -- Asignar el resultado de la resta
-    diff <= temp_sum(3 downto 0);
+    diff <= std_logic_vector(temp_result(3 downto 0));
 
-    -- El bit más significativo de temp_sum representa el préstamo
-    borrow <= not temp_sum(4);
+    -- El bit más significativo de temp_result indica si hubo préstamo
+    borrow <= not temp_result(4);
 
 end architecture Behavioral;
+
 
 
 -- Complemento a 2: Se calcula el complemento a 2 del número

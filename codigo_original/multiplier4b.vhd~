@@ -1,0 +1,43 @@
+-- Importa la librería estándar de IEEE para el manejo de señales de lógica digital.
+library IEEE;
+use IEEE.std_logic_1164.all;
+
+-- Definición de la entidad para el multiplicador de 4 bits.
+-- La entidad describe los puertos de entrada y salida del módulo.
+entity multiplier4b is
+    port(
+        a : in std_logic_vector(3 downto 0);  -- Entrada: Multiplicando de 4 bits.
+        b : in std_logic_vector(3 downto 0);  -- Entrada: Multiplicador de 4 bits.
+        product : out std_logic_vector(7 downto 0)  -- Salida: Producto de 8 bits.
+    );
+end entity multiplier4b;
+
+-- Implementación de la arquitectura del multiplicador.
+-- Se utiliza un enfoque comportamental para describir cómo se lleva a cabo la multiplicación.
+architecture Behavioral of multiplier4b is
+begin
+    -- Proceso que se activa cuando cambian las señales 'a' o 'b'.
+    process(a, b)
+        -- Declaración de variables locales usadas dentro del proceso.
+        variable temp_product: std_logic_vector(7 downto 0) := (others => '0'); -- Almacena el producto temporalmente.
+        variable multiplicand: std_logic_vector(7 downto 0) := (others => '0'); -- Almacena el multiplicando extendido a 8 bits.
+        variable multiplier: std_logic_vector(3 downto 0); -- Almacena el multiplicador.
+    begin
+        -- Extiende el multiplicando 'a' a 8 bits, añadiendo ceros en los bits más significativos.
+        multiplicand := "0000" & a; 
+        -- Asigna el valor del multiplicador.
+        multiplier := b;
+
+        -- Bucle que recorre cada bit del multiplicador.
+        for i in 0 to 3 loop
+            -- Si el bit actual del multiplicador es '1', realiza una suma desplazada.
+            if multiplier(i) = '1' then
+                -- Desplaza el multiplicando hacia la izquierda 'i' veces y suma al producto temporal.
+                temp_product := temp_product + (multiplicand sll i);
+            end if;
+        end loop;
+
+        -- Asigna el producto calculado a la salida.
+        product <= temp_product;
+    end process;
+end architecture Behavioral;
