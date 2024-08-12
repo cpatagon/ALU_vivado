@@ -1,0 +1,12 @@
+# compile vhdl design source files
+vhdl xil_defaultlib  \
+"../../../../Proyecto_ALU.srcs/sources_1/ip/vio_0_2/sim/vio_0.vhd" \
+"../../../../Proyecto_ALU.srcs/sources_1/imports/src/components/sumador/sum1b.vhd" \
+"../../../../Proyecto_ALU.srcs/sources_1/imports/src/components/sumador/sumNb.vhd" \
+"../../../../Proyecto_ALU.srcs/sources_1/imports/codigo_original/subtractor4b.vhd" \
+"../../../../Proyecto_ALU.srcs/sources_1/imports/codigo_original/multiplier4b.vhd" \
+"../../../../Proyecto_ALU.srcs/sources_1/imports/codigo_original/divider4b.vhd" \
+"../../../../Proyecto_ALU.srcs/sources_1/imports/src/top/ALU.vhd" \
+
+# Do not sort compile order
+nosort

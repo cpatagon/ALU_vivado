@@ -2,79 +2,79 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
-entity ALU_tb is
-end entity ALU_tb;
+entity divider4b_tb is
+end entity divider4b_tb;
 
-architecture testbench of ALU_tb is
-    -- Declaración de señales para conectar con la ALU
-    signal clk: std_logic := '0'; -- Inicializar el reloj en '0'
-    signal A, B: std_logic_vector(3 downto 0);
-    signal ALU_Sel: std_logic_vector(1 downto 0);
-    signal Result: std_logic_vector(3 downto 0);
-    signal CarryOut: std_logic;
+architecture testbench of divider4b_tb is
+    -- Señales para conectar con el módulo divisor
+    signal clk : std_logic := '0';
+    signal dividend : std_logic_vector(3 downto 0);
+    signal divisor : std_logic_vector(3 downto 0);
+    signal quotient : std_logic_vector(3 downto 0);
+    signal remainder : std_logic_vector(3 downto 0);
 
-    -- Declaración del componente ALU
-    component ALU
-        port(
-            clk : in std_logic; -- Reloj
-            A : in std_logic_vector(3 downto 0);
-            B : in std_logic_vector(3 downto 0);
-            ALU_Sel : in std_logic_vector(1 downto 0);
-            Result : out std_logic_vector(3 downto 0);
-            CarryOut : out std_logic
-        );
-    end component;
+    -- Periodo de reloj
+    constant clk_period : time := 10 ns;
 
 begin
-    -- Instanciación de la ALU dentro del banco de pruebas
-    uut: ALU
+    -- Instancia del módulo divisor
+    uut: entity work.divider4b
         port map(
             clk => clk,
-            A => A,
-            B => B,
-            ALU_Sel => ALU_Sel,
-            Result => Result,
-            CarryOut => CarryOut
+            dividend => dividend,
+            divisor => divisor,
+            quotient => quotient,
+            remainder => remainder
         );
 
-    -- Proceso para generar el reloj
-    clock_gen: process
+    -- Generación del reloj
+    clk_process : process
     begin
         while true loop
             clk <= '0';
-            wait for 5 ns;
+            wait for clk_period/2;
             clk <= '1';
-            wait for 5 ns;
+            wait for clk_period/2;
         end loop;
     end process;
 
-    -- Proceso para aplicar estímulos y verificar la operación de suma y resta
-    stimulus: process
+    -- Estímulos de prueba
+    stimulus_process: process
     begin
-        -- Seleccionar operación de suma
-        ALU_Sel <= "00";
+        -- Prueba 1: División sin residuo
+        dividend <= "1000";  -- 8
+        divisor <= "0010";   -- 2
+        wait for clk_period;
+        
+        -- Verificación del resultado
+        assert (quotient = "0100" and remainder = "0000")  -- 8 / 2 = 4, resto = 0
+        report "Error: 8 / 2 no es 4 con residuo 0"
+        severity error;
 
-        -- Prueba de suma: 3 + 4 = 7
-        A <= "0011"; B <= "0100"; wait for 20 ns;
-        assert (Result = "0111" and CarryOut = '0') report "Error: 3 + 4" severity error;
+        -- Prueba 2: División con residuo
+        dividend <= "1001";  -- 9
+        divisor <= "0011";   -- 3
+        wait for clk_period;
+        
+        -- Verificación del resultado
+        assert (quotient = "0011" and remainder = "0000")  -- 9 / 3 = 3, resto = 0
+        report "Error: 9 / 3 no es 3 con residuo 0"
+        severity error;
 
-        -- Prueba de suma: 8 + 7 = 15
-        A <= "1000"; B <= "0111"; wait for 20 ns;
-        assert (Result = "1111" and CarryOut = '0') report "Error: 8 + 7" severity error;
+        -- Prueba 3: División por cero
+        dividend <= "1010";  -- 10
+        divisor <= "0000";   -- 0
+        wait for clk_period;
+        
+        -- Verificación del resultado
+        assert (quotient = "0000" and remainder = dividend)  -- División por 0, cociente = 0, resto = dividendo
+        report "Error: División por 0 no es manejada correctamente"
+        severity error;
 
-        -- Prueba de resta: 5 - 3 = 2
-        ALU_Sel <= "01";
-        A <= "0101"; B <= "0011"; wait for 20 ns;
-        assert (Result = "0010" and CarryOut = '0') report "Error: 5 - 3" severity error;
-
-        -- Prueba de resta: 2 - 3 = -1 (con préstamo)
-        A <= "0010"; B <= "0011"; wait for 20 ns;
-        assert (Result = "1111" and CarryOut = '1') report "Error: 2 - 3" severity error;
-
-        -- Finalizar simulación
+        -- Fin de la simulación
         wait;
     end process;
-
 end architecture testbench;
+
 
 

@@ -33,7 +33,7 @@
     <Option Name="DSAVendor" Val="xilinx"/>
     <Option Name="DSABoardId" Val="arty-z7-10"/>
     <Option Name="DSANumComputeUnits" Val="60"/>
-    <Option Name="WTXSimLaunchSim" Val="21"/>
+    <Option Name="WTXSimLaunchSim" Val="22"/>
     <Option Name="WTModelSimLaunchSim" Val="0"/>
     <Option Name="WTQuestaLaunchSim" Val="0"/>
     <Option Name="WTIesLaunchSim" Val="0"/>
@@ -85,6 +85,14 @@
         <FileInfo>
           <Attr Name="ImportPath" Val="$PPRDIR/../codigo_original/multiplier4b.vhd"/>
           <Attr Name="ImportTime" Val="1723391944"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/codigo_original/divider4b.vhd">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../codigo_original/divider4b.vhd"/>
+          <Attr Name="ImportTime" Val="1723424526"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
@@ -144,6 +152,7 @@
       <Filter Type="Srcs"/>
       <File Path="$PSRCDIR/sim_1/imports/testbench/ALU_tb.vhd">
         <FileInfo>
+          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="ImportPath" Val="$PPRDIR/../../Proyecto_ALU/testbench/ALU_tb.vhd"/>
           <Attr Name="ImportTime" Val="1722795487"/>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -162,7 +171,7 @@
       </File>
       <Config>
         <Option Name="DesignMode" Val="RTL"/>
-        <Option Name="TopModule" Val="ALU_tb"/>
+        <Option Name="TopModule" Val="ALU"/>
         <Option Name="TopLib" Val="xil_defaultlib"/>
         <Option Name="TopAutoSet" Val="TRUE"/>
         <Option Name="TransportPathDelay" Val="0"/>

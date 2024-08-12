@@ -15,13 +15,11 @@ end entity ALU;
 
 architecture Behavioral of ALU is
     -- Señales internas para la operación
-    signal Sum: std_logic_vector(3 downto 0);
-    signal Difference: std_logic_vector(3 downto 0);
-    signal Product: std_logic_vector(7 downto 0);
-    signal Quotient: std_logic_vector(3 downto 0);
-    signal Remainder: std_logic_vector(3 downto 0);
-    signal Carry: std_logic;
-    signal Borrow: std_logic;
+    signal Sum: std_logic_vector(3 downto 0);  -- Resultado de la suma
+    signal Difference: std_logic_vector(3 downto 0);  -- Resultado de la resta
+    signal Product: std_logic_vector(7 downto 0);  -- Resultado de la multiplicación
+    signal Carry: std_logic;  -- Acarreo de la suma
+    signal Borrow: std_logic; -- Préstamo de la resta
 
     -- Declaración del componente VIO
     COMPONENT vio_0
@@ -47,11 +45,11 @@ architecture Behavioral of ALU is
 begin
     -- Instancia del sumador de 4 bits usando sumNb
     sumador_inst: entity work.sumNb
-        generic map(N => 4)
+        generic map(N => 4)  -- Define el tamaño del sumador
         port map(
-            a_i => vio_A,
-            b_i => vio_B,
-            ci_i => '0',
+            a_i => vio_A,  -- Usa la señal interna vio_A
+            b_i => vio_B,  -- Usa la señal interna vio_B
+            ci_i => '0',  -- Acarreo de entrada inicial es 0
             s_o => Sum,
             co_o => Carry
         );
@@ -73,15 +71,6 @@ begin
             product => Product
         );
 
-        -- Instancia del divisor de 4 bits
-        divider_inst: entity work.divider4b
-            port map(
-                clk => clk, -- Conectar el reloj
-                dividend => vio_A,
-                divisor => vio_B,
-                quotient => Quotient,
-                remainder => Remainder
-            );
     -- Proceso para seleccionar la operación de la ALU
     process(clk)
     begin
@@ -96,9 +85,6 @@ begin
                 when "10" =>  -- Operación de multiplicación
                     internal_result <= Product;
                     internal_carryout <= '0'; -- No se usa CarryOut en multiplicación
-                when "11" =>  -- Operación de división
-                    internal_result <= "0000" & Quotient; -- Extender el cociente a 8 bits
-                    internal_carryout <= '0'; -- No se usa CarryOut en división
                 when others =>
                     internal_result <= (others => '0');  -- Estado por defecto (sin operación)
                     internal_carryout <= '0';
@@ -122,5 +108,3 @@ begin
         );
 
 end architecture Behavioral;
-
-
