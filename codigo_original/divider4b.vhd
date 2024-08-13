@@ -4,41 +4,38 @@ use IEEE.numeric_std.all;
 
 entity divider4b is
     port(
-        dividend : in std_logic_vector(3 downto 0);  -- Dividendo de 4 bits
-        divisor : in std_logic_vector(3 downto 0);   -- Divisor de 4 bits
-        quotient : out std_logic_vector(3 downto 0); -- Cociente de la división
-        remainder : out std_logic_vector(3 downto 0) -- Residuo de la división
+        clk : in std_logic;
+        dividend : in std_logic_vector(3 downto 0);
+        divisor : in std_logic_vector(3 downto 0);
+        quotient : out std_logic_vector(3 downto 0);
+        remainder : out std_logic_vector(3 downto 0)
     );
 end entity divider4b;
 
 architecture Behavioral of divider4b is
-    signal dividend_unsigned, divisor_unsigned: unsigned(3 downto 0);
-    signal quotient_unsigned, remainder_unsigned: unsigned(3 downto 0);
+    signal dividend_reg, divisor_reg : unsigned(3 downto 0);
+    signal quot_reg, rem_reg : unsigned(3 downto 0);
 begin
-    process(dividend, divisor)
+    process(clk)
     begin
-        -- Convertir las entradas a unsigned
-        dividend_unsigned <= unsigned(dividend);
-        divisor_unsigned <= unsigned(divisor);
-
-        -- Inicializar cociente y residuo
-        quotient_unsigned <= (others => '0');
-        remainder_unsigned <= dividend_unsigned;
-
-        -- División por restas sucesivas
-        if divisor_unsigned /= 0 then
-            while remainder_unsigned >= divisor_unsigned loop
-                remainder_unsigned <= remainder_unsigned - divisor_unsigned;
-                quotient_unsigned <= quotient_unsigned + 1;
-            end loop;
-        else
-            -- Manejar división por cero
-            quotient_unsigned <= (others => '1'); -- Indica un error de división
-            remainder_unsigned <= dividend_unsigned;
+        if rising_edge(clk) then
+            -- Registrar las entradas
+            dividend_reg <= unsigned(dividend);
+            divisor_reg <= unsigned(divisor);
+            
+            -- Realizar la división
+            if divisor_reg /= 0 then
+                quot_reg <= dividend_reg / divisor_reg;
+                rem_reg <= dividend_reg rem divisor_reg;
+            else
+                -- Manejar la división por cero
+                quot_reg <= (others => '1');  -- Todos unos para indicar error
+                rem_reg <= dividend_reg;      -- El dividendo se convierte en el resto
+            end if;
         end if;
-
-        -- Asignar resultados a las salidas
-        quotient <= std_logic_vector(quotient_unsigned);
-        remainder <= std_logic_vector(remainder_unsigned);
     end process;
+
+    -- Asignar los resultados a las salidas
+    quotient <= std_logic_vector(quot_reg);
+    remainder <= std_logic_vector(rem_reg);
 end architecture Behavioral;
