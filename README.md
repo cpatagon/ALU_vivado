@@ -1,5 +1,6 @@
 # Proyecto ALU (Unidad Aritmético-Lógica) en VHDL
 
+
 ## Descripción
 
 Este proyecto implementa una Unidad Aritmético-Lógica (ALU) en VHDL. Una ALU es un componente esencial en los procesadores modernos, responsable de realizar operaciones aritméticas y lógicas sobre los datos. Este diseño modular permite la simulación y prueba de diferentes operaciones mediante bancos de pruebas detallados.
@@ -7,6 +8,31 @@ Este proyecto implementa una Unidad Aritmético-Lógica (ALU) en VHDL. Una ALU e
 ![diagramaALUSUM_esquematico](./doc/img/video_alu.png)
 *Fig 0: funcionamiento ejecución del proyecto ALU en Vivado sobre una placa ARTY Z7*  
 
+## Demostración en Video
+
+Para ver una demostración en funcionamiento de la ALU implementada en este proyecto, 
+consulta el siguiente video:
+
+[Video de demostración de la ALU en FPGA](https://www.youtube.com/watch?v=fYx1muBo78U)
+
+Este video muestra el funcionamiento práctico de la ALU, incluyendo las operaciones 
+de suma, resta, multiplicación y división implementadas en la FPGA.
+
+## Código Implementado 
+
+### Archivos Principales
+- [ALU.vhd](codigo_original/ALU.vhd)
+- [divider4b.vhd](codigo_original/divider4b.vhd)
+- [multiplier4b.vhd](codigo_original/multiplier4b.vhd)
+- [subtractor4b.vhd](codigo_original/subtractor4b.vhd)
+- [sum1b.vhd](codigo_original/sum1b.vhd)
+- [sumNb.vhd](codigo_original/sumNb.vhd)
+
+### Archivos en la carpeta 'otros'
+- [ALU_srm.vhd](codigo_original/otros/ALU_srm.vhd)
+- [ALU_sum.vhd](codigo_original/otros/ALU_sum.vhd)
+- [ALU_tb.vhd](codigo_original/otros/ALU_tb.vhd)
+- [lab1_ArtyZ7_10.xdc](codigo_original/otros/lab1_ArtyZ7_10.xdc)
 
 ## Funcionalidades
 
