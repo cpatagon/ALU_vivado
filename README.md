@@ -17,10 +17,16 @@ A continuación se presenta una presentación resumen del proyecto con sus princ
 Para ver una demostración en funcionamiento de la ALU implementada en este proyecto, 
 consulta el siguiente video:
 
-[Video de demostración de la ALU en FPGA](https://www.youtube.com/watch?v=fYx1muBo78U)
+- [Video de demostración de la ALU en FPGA](https://www.youtube.com/watch?v=fYx1muBo78U)
 
 Este video muestra el funcionamiento práctico de la ALU, incluyendo las operaciones 
 de suma, resta, multiplicación y división implementadas en la FPGA.
+
+### Características Técnicas
+- Entradas: A[3:0], B[3:0], ALU_Sel[1:0]
+- Salida principal: Result[7:0]
+- Señal de control: CarryOut (para suma/resta)
+- Frecuencia de operación: 125 MHz
 
 ## Código Implementado 
 
@@ -47,6 +53,35 @@ La ALU soporta las siguientes operaciones:
 - **Multiplicación:** Calcula el producto de dos operandos de 4 bits.
 - **División:** Realiza la división entre dos operandos de 4 bits y produce cociente y resto.
 - **Operaciones Lógicas:** Incluye operaciones como AND, OR, y XOR entre los operandos de 4 bits.
+
+![Esquema general del proyecto](doc/img/esquema_general.png)
+
+
+### Implementación
+- Sumador: Utiliza el método de propagación de acarreo (Ripple Carry)
+- Restador: Emplea el método de complemento a 2 y suma
+- Multiplicador: Implementa el algoritmo de suma y desplazamiento
+- Divisor: Usa los operadores de división y módulo integrados de VHDL
+
+![ALU General](doc/img/ALU_srmd.png)
+
+### Características Adicionales
+- Manejo de casos especiales (e.j., división por cero)
+- Uso de Virtual I/O (VIO) para control y monitoreo en tiempo real
+- Diseño modular con componentes separados para cada operación
+
+### Herramientas y Tecnología
+- Lenguaje: VHDL
+- Plataforma de desarrollo: Vivado
+- FPGA objetivo: Xilinx Zynq-Z7 (xc7z010clg400-1)
+
+### Rendimiento
+- Utilización eficiente de recursos de la FPGA (menos del 1% para la mayoría de los componentes)
+- Operaciones completadas en un solo ciclo de reloj (excepto para números grandes en división)
+
+![recursos utilizados](doc/img/utilizatio_table_srmd.png)
+
+
 
 ## Estructura del Proyecto
 
@@ -111,7 +146,7 @@ Para `a = "0010"` (2 en decimal) y `b = "0011"` (3 en decimal):
 
 Este módulo es fundamental para realizar operaciones de resta en diseños digitales donde se necesitan manejar números negativos o detectar préstamos.
 
-
+![Modulo de Resta](doc/img/subtrastor.png)
 
 ## Módulo de Multiplicación de 4 Bits en VHDL
 
@@ -179,6 +214,8 @@ begin
 end architecture Behavioral;
 ```
 
+
+![esquematico multiplicador](doc/img/esquematico_multiplicador.png)
 
 ## Requisitos
 
