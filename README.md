@@ -76,8 +76,7 @@ La ALU soporta las siguientes operaciones:
 - FPGA objetivo: Xilinx Zynq-Z7 (xc7z010clg400-1)
 
 ### Rendimiento
-- Utilización eficiente de recursos de la FPGA (menos del 1% para la mayoría de los componentes)
-- Operaciones completadas en un solo ciclo de reloj (excepto para números grandes en división)
+- Utilización eficiente de recursos de la FPGA como se muestra en las figuras que se presentan a continuación
 
 ![recursos utilizados](doc/img/utilizatio_table_srmd.png)
 
