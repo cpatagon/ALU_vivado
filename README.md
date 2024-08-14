@@ -8,7 +8,11 @@ Este proyecto implementa una Unidad Aritmético-Lógica (ALU) en VHDL. Una ALU e
 ![diagramaALUSUM_esquematico](./doc/img/video_alu.png)
 *Fig 0: funcionamiento ejecución del proyecto ALU en Vivado sobre una placa ARTY Z7*  
 
-## Demostración en Video
+## Presentación y Demostración en Video del Proyecto
+
+A continuación se presenta una presentación resumen del proyecto con sus principales características 
+
+- [Presentación PDF del proyecto](doc/GdP_LuisGomez.pdf)
 
 Para ver una demostración en funcionamiento de la ALU implementada en este proyecto, 
 consulta el siguiente video:
